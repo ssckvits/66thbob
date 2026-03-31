@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>36th Battle of Babes - ODI Match</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Barlow+Condensed:ital,wght@0,300;0,400;0,600;0,700;0,900;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0c1a33;
+            --bg2: #0a1325;
+            --surface: rgba(4, 4, 37, 0.9);
+            --surface2: rgba(0, 9, 24, 0.85);
+            --border: rgba(111, 13, 29, 0.507);
+            --border-hot: rgba(111,13,29,0.6);
+            --maroon: #6f0d1d;
+            --maroon-dim: rgba(111,13,29,0.6);
+            --maroon-glow: rgba(111,13,29,0.15);
+            --gold: #d5b97a;
+            --gold-dim: rgba(213,185,122,0.7);
+            --accent-light: #8b1a2e;
+            --cream: #f3eedc;
+            --cream-dim: rgba(243,238,220,0.7);
+            --text: #ede6d2;
+            --text-dim: rgba(237,230,210,0.55);
+            --text-bright: #f3eedc;
+            --score-grad: linear-gradient(135deg, #d5b97a, #8b1a2e);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg);
+            background-image:
+                radial-gradient(ellipse 80% 60% at 50% -10%, rgba(111,13,29,0.12) 0%, transparent 70%),
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Cpath d='M 60 0 L 0 0 0 60' fill='none' stroke='rgba(111,13,29,0.04)' stroke-width='0.5'/%3E%3C/svg%3E");
+            color: var(--text);
+            font-family: 'Barlow Condensed', sans-serif;
+            min-height: 100vh;
+            padding-bottom: 60px;
+            overflow-x: hidden;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        ::selection { background: rgba(111,13,29,0.25); color: #fff; }
+
+        /* ─── Scan-line overlay ─── */
+        body::before {
+            content: '';
+            position: fixed; inset: 0;
+            background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.06) 2px, rgba(0,0,0,0.06) 4px);
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* ─── NAV ─── */
+        .page-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(5,11,24,0.92);
+            backdrop-filter: blur(20px);
+            padding: 10px 28px;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-logo {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--gold);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .nav-logo span { color: var(--gold); }
+
+        .nav-menu { display: flex; gap: 4px; }
+
+        .nav-link {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding: 7px 14px;
+            border-radius: 4px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: color 0.2s, background 0.2s;
+        }
+        .nav-link:hover { color: var(--cream); background: rgba(111,13,29,0.1); }
+
+
+        /* ─── HEADER ─── */
+        header {
+            position: relative;
+            overflow: hidden;
+            padding: 50px 0 40px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        header::before {
+            content: '';
+            position: absolute; inset: 0;
+            background:
+                radial-gradient(ellipse 70% 100% at 50% 100%, rgba(111,13,29,0.2) 0%, transparent 70%),
+                radial-gradient(ellipse 40% 60% at 20% 50%, rgba(213,185,122,0.08) 0%, transparent 60%),
+                radial-gradient(ellipse 40% 60% at 80% 50%, rgba(139,26,46,0.05) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        /* circuit lines decoration */
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), var(--maroon), var(--gold), transparent);
+        }
+
+        .header-eyebrow {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 5px;
+            color: var(--gold-dim);
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        h1 {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 3.2rem;
+            font-weight: 700;
+            color: var(--cream);
+            letter-spacing: -0.5px;
+            line-height: 1;
+            text-shadow: 0 0 40px rgba(111,13,29,0.4);
+            animation: fadeInDown 0.8s ease-out, glitch 4s infinite;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes glitch {
+            0% { text-shadow: -2px 0 var(--gold), 2px 2px var(--maroon); }
+            20% { text-shadow: 2px 2px var(--maroon), -2px -2px var(--gold); }
+            40% { text-shadow: -2px 2px var(--gold), 2px -2px var(--maroon); }
+            60% { text-shadow: 2px 0 var(--maroon), -2px 2px var(--gold); }
+            80% { text-shadow: -2px -2px var(--gold), 2px 0 var(--maroon); }
+            100% { text-shadow: -2px 0 var(--gold), 2px 2px var(--maroon); }
+        }
+
+        .match-subtitle {
+            margin: 12px 0 18px;
+            font-size: 1.1rem;
+            font-weight: 400;
+            color: var(--text-dim);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .vs-tag {
+            color: var(--gold);
+            font-weight: 700;
+            font-family: 'Space Mono', monospace;
+        }
+
+        .live-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255,61,107,0.12);
+            border: 1px solid rgba(255,61,107,0.5);
+            color: var(--red);
+            padding: 5px 14px 5px 10px;
+            border-radius: 2px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            animation: livePulse 2s infinite;
+        }
+        .live-dot {
+            width: 7px; height: 7px;
+            background: var(--red);
+            border-radius: 50%;
+            animation: dotBlink 1s infinite;
+        }
+        @keyframes dotBlink {
+            0%,100% { opacity: 1; } 50% { opacity: 0.2; }
+        }
+        @keyframes livePulse {
+            0%,100% { box-shadow: 0 0 0 0 rgba(255,61,107,0.3); }
+            50% { box-shadow: 0 0 0 6px rgba(255,61,107,0); }
+        }
+
+        .innings-pill {
+            display: inline-block;
+            margin-top: 16px;
+            background: linear-gradient(135deg, rgba(111,13,29,0.08), rgba(213,185,122,0.08));
+            border: 1px solid var(--border);
+            padding: 8px 24px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--gold);
+        }
+
+        /* ─── CONTAINER ─── */
+        .container {
+            width: 95%;
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        /* ─── HERO SUMMARY BAND ─── */
+        .hero-band {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1px;
+            background: var(--border);
+            margin: 32px 0;
+            border: 1px solid var(--border);
+        }
+
+        .hero-tile {
+            background: rgba(12,26,51,0.95);
+            padding: 18px 20px;
+            text-align: center;
+            transition: background 0.2s, box-shadow 0.2s;
+            box-shadow: inset 0 0 20px rgba(111,13,29,0.08), 0 0 20px rgba(12,26,51,0.3);
+        }
+        .hero-tile:hover { background: rgba(15,32,60,0.95); box-shadow: inset 0 0 20px rgba(111,13,29,0.12), 0 0 25px rgba(111,13,29,0.2); }
+
+        .hero-tile-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 3px;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .hero-tile-value {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--cream);
+        }
+
+        /* ─── SECTION HEADER ─── */
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin: 40px 0 20px;
+        }
+        .section-header::before {
+            content: '▶';
+            color: var(--gold);
+            font-size: 0.7rem;
+        }
+        .section-title {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--gold);
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+        .section-header::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, var(--border-hot), transparent);
+        }
+
+        /* ─── INFO CARDS ─── */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+
+        .info-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 16px 18px;
+            position: relative;
+            transition: border-color 0.2s, background 0.2s;
+            overflow: hidden;
+        }
+        .info-card::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 3px; height: 100%;
+            background: linear-gradient(180deg, var(--gold), transparent);
+        }
+        .info-card:hover { border-color: var(--border-hot); background: var(--surface2); }
+
+        .info-card h3 {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 3px;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+        .info-card p {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-bright);
+            letter-spacing: 0.3px;
+        }
+
+        /* ─── SCOREBOARD ─── */
+        .scoreboard {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            margin-bottom: 28px;
+            overflow: hidden;
+            position: relative;
+        }
+        .scoreboard::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--gold), var(--maroon), var(--gold));
+        }
+
+        .score-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding: 22px 24px 18px;
+            border-bottom: 1px solid var(--border);
+            background: linear-gradient(135deg, rgba(111,13,29,0.05), transparent);
+        }
+
+        .score-team-name {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--gold);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .score-overs {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            letter-spacing: 2px;
+            margin-top: 4px;
+        }
+
+        .score-runs {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--text-bright);
+            line-height: 1;
+            text-shadow: 0 0 30px rgba(111,13,29,0.3);
+            letter-spacing: -1px;
+        }
+
+        /* ─── PLAYER GRID ─── */
+        .player-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1px;
+            background: var(--border);
+        }
+
+        .player-cell {
+            background: var(--surface);
+            padding: 20px 22px;
+            position: relative;
+            transition: background 0.2s;
+        }
+        .player-cell:hover { background: rgba(111,13,29,0.04); }
+
+        .player-role {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 3px;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+        .batter-cell .player-role { color: rgba(255,203,71,0.6); }
+        .bowler-cell .player-role { color: rgba(213,185,122,0.5); }
+
+        .player-name-val {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-bright);
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        .player-big-num {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 2.4rem;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 12px;
+        }
+        .batter-cell .player-big-num { color: var(--gold); text-shadow: 0 0 20px rgba(255,203,71,0.3); }
+        .bowler-cell .player-big-num { color: var(--gold); font-size: 1.5rem; margin-bottom: 6px; }
+
+        .stat-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .chip {
+            background: rgba(111,13,29,0.05);
+            border: 1px solid rgba(111,13,29,0.15);
+            padding: 3px 10px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--text-dim);
+            letter-spacing: 0.5px;
+        }
+        .chip strong { color: var(--text); }
+
+        /* ─── STATS GRID ─── */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 10px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 18px 12px;
+            text-align: center;
+            position: relative;
+            transition: transform 0.2s, border-color 0.2s;
+            overflow: hidden;
+        }
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(213,185,122,0.3), transparent);
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .stat-card:hover { transform: translateY(-3px); border-color: var(--border-hot); }
+        .stat-card:hover::before { opacity: 1; }
+
+        .stat-card h3 {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 2px;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+        .stat-card p {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.7rem;
+            font-weight: 700;
+            color: var(--text-bright);
+        }
+
+        .stat-card.highlight {
+            background: linear-gradient(135deg, rgba(111,13,29,0.08), rgba(213,185,122,0.05));
+            border-color: rgba(111,13,29,0.25);
+        }
+        .stat-card.highlight p { color: var(--gold); text-shadow: 0 0 15px rgba(213,185,122,0.3); }
+
+        /* ─── POLL ─── */
+        .poll-section {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 32px;
+            margin-bottom: 32px;
+            position: relative;
+            overflow: hidden;
+        }
+        .poll-section::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 2px;
+            background: linear-gradient(90deg, var(--gold), var(--maroon), var(--gold));
+        }
+
+        .poll-title {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-bright);
+            text-align: center;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+        }
+        .poll-title span { color: var(--gold); }
+
+        .poll-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+        }
+
+        .poll-btn {
+            padding: 12px 36px;
+            border: 2px solid transparent;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 1rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.25s;
+        }
+
+        .poll-btn-ssc {
+            background: transparent;
+            border-color: var(--maroon);
+            color: var(--cream);
+        }
+        .poll-btn-ssc:hover {
+            background: var(--maroon);
+            color: var(--cream);
+            box-shadow: 0 0 24px rgba(111,13,29,0.4);
+        }
+
+        .poll-btn-vc {
+            background: transparent;
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+        .poll-btn-vc:hover {
+            background: var(--gold);
+            color: var(--bg);
+            box-shadow: 0 0 24px rgba(255,203,71,0.4);
+        }
+
+        .poll-bars {
+            margin: 0;
+        }
+
+        .poll-row { margin-bottom: 18px; }
+        .poll-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 7px;
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+        .poll-team-name { color: var(--text); letter-spacing: 1px; }
+        .poll-count-val {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--text-dim);
+        }
+
+        .poll-bar {
+            height: 10px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+        .poll-fill {
+            height: 100%;
+            background: linear-gradient(90deg, rgba(111,13,29,0.6), var(--maroon));
+            transition: width 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+        .poll-fill::after {
+            content: '';
+            position: absolute;
+            right: 0; top: 0; bottom: 0;
+            width: 4px;
+            background: var(--gold);
+            box-shadow: 0 0 8px var(--gold);
+        }
+        .poll-fill-vc {
+            background: linear-gradient(90deg, rgba(255,203,71,0.6), var(--gold));
+        }
+        .poll-fill-vc::after { background: var(--gold); box-shadow: 0 0 8px var(--gold); }
+
+        /* ─── TABLES ─── */
+        .table-wrap {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            margin-bottom: 32px;
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: rgba(111,13,29,0.05);
+            color: var(--gold);
+            padding: 12px 16px;
+            text-align: left;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            font-weight: 400;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--border);
+        }
+
+        td {
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(111,13,29,0.06);
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        td:first-child { color: var(--text-bright); font-weight: 700; letter-spacing: 0.3px; }
+
+        tr:last-child td { border-bottom: none; }
+        tbody tr { transition: background 0.15s; }
+        tbody tr:hover { background: rgba(111,13,29,0.04); }
+
+        /* ─── SUMMARY GRID ─── */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+
+        .summary-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 20px 22px;
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.2s;
+        }
+        .summary-card:hover { border-color: var(--border-hot); }
+        .summary-card::after {
+            content: '';
+            position: absolute;
+            top: 0; right: 0;
+            width: 60px; height: 60px;
+            background: radial-gradient(circle, rgba(111,13,29,0.05), transparent 70%);
+            border-radius: 50%;
+        }
+        .summary-card h3 {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 3px;
+            color: rgba(213,185,122,0.6);
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+        .summary-card p {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-bright);
+            line-height: 1.5;
+        }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 1200px) {
+            .container { width: 98%; }
+            .stats-grid { grid-template-columns: repeat(4, 1fr); gap: 8px; }
+            h1 { font-size: 2.8rem; }
+        }
+
+        @media (max-width: 900px) {
+            .page-nav { padding: 8px 20px; }
+            .nav-logo { font-size: 0.8rem; letter-spacing: 2px; }
+            .nav-link { font-size: 0.85rem; padding: 6px 10px; }
+
+            header { padding: 40px 0 30px; }
+            h1 { font-size: 2.4rem; }
+            .header-eyebrow { font-size: 0.65rem; }
+            .match-subtitle { font-size: 1rem; }
+
+            .hero-band { grid-template-columns: repeat(2, 1fr); gap: 0.5px; }
+            .hero-tile { padding: 14px 16px; }
+            .hero-tile-value { font-size: 1.4rem; }
+
+            .info-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .info-card { padding: 14px 16px; }
+            .info-card h3 { font-size: 0.55rem; }
+            .info-card p { font-size: 0.95rem; }
+
+            .stats-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+            .stat-card { padding: 14px 10px; }
+            .stat-card h3 { font-size: 0.55rem; }
+            .stat-card p { font-size: 1.4rem; }
+
+            .player-grid { grid-template-columns: 1fr; }
+            .player-cell { padding: 16px 18px; }
+            .player-name-val { font-size: 1.1rem; }
+            .player-big-num { font-size: 2rem; }
+            .stat-chips { gap: 5px; }
+            .chip { font-size: 0.7rem; padding: 2px 8px; }
+
+            .summary-grid { grid-template-columns: 2fr 1fr; gap: 10px; }
+            .summary-card { padding: 16px 18px; }
+            .summary-card h3 { font-size: 0.55rem; }
+            .summary-card p { font-size: 0.9rem; }
+
+            .score-runs { font-size: 3rem; }
+            .score-team-name { font-size: 1.1rem; }
+            .score-overs { font-size: 0.65rem; }
+
+            table { font-size: 0.9rem; }
+            th { padding: 10px 12px; font-size: 0.6rem; }
+            td { padding: 10px 12px; font-size: 0.85rem; }
+
+            .poll-section { padding: 24px; }
+            .poll-title { font-size: 1.2rem; }
+            .poll-buttons { gap: 12px; }
+            .poll-btn { padding: 10px 28px; font-size: 0.9rem; }
+
+            .section-header { margin: 30px 0 16px; gap: 10px; }
+            .section-title { font-size: 0.9rem; letter-spacing: 3px; }
+        }
+
+        @media (max-width: 768px) {
+            .page-nav { flex-wrap: wrap; gap: 10px; }
+            .nav-menu { gap: 2px; }
+            .nav-link { font-size: 0.75rem; padding: 5px 8px; }
+
+            h1 { font-size: 2.1rem; margin-bottom: 8px; }
+            .header-eyebrow { font-size: 0.6rem; margin-bottom: 10px; }
+            .match-subtitle { font-size: 0.95rem; margin: 10px 0; }
+
+            .hero-band { grid-template-columns: repeat(2, 1fr); gap: 0.5px; margin: 20px 0; }
+            .hero-tile-value { font-size: 1.2rem; }
+            .hero-tile-label { font-size: 0.6rem; }
+
+            .info-grid { grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 24px; }
+
+            .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+
+            .summary-grid { grid-template-columns: 1fr; gap: 8px; }
+
+            .player-grid { grid-template-columns: 1fr; }
+
+            .poll-section { padding: 18px; }
+            .poll-title { font-size: 1.1rem; margin-bottom: 18px; }
+            .poll-buttons { flex-direction: column; gap: 10px; }
+            .poll-btn { width: 100%; max-width: 100%; padding: 10px 20px; }
+
+            table { width: 100%; overflow-x: auto; }
+            th { padding: 8px 10px; font-size: 0.55rem; }
+            td { padding: 8px 10px; font-size: 0.8rem; }
+        }
+
+        @media (max-width: 600px) {
+            .container { width: 100%; padding: 0 12px; }
+            .page-nav { padding: 6px 12px; }
+            .nav-logo { font-size: 0.75rem; }
+            .nav-menu { display: none; }
+
+            header { padding: 30px 12px; margin-bottom: 20px; }
+            h1 { font-size: 1.8rem; text-shadow: 0 0 20px rgba(111,13,29,0.3); }
+            .header-eyebrow { font-size: 0.55rem; letter-spacing: 2px; margin-bottom: 8px; }
+            .match-subtitle { font-size: 0.9rem; }
+            .live-badge { font-size: 0.7rem; padding: 4px 10px; }
+
+            .hero-band { grid-template-columns: 1fr 1fr; gap: 0.5px; margin: 16px 0; }
+            .hero-tile { padding: 12px 14px; }
+            .hero-tile-value { font-size: 1.1rem; }
+            .hero-tile-label { font-size: 0.55rem; }
+
+            .info-grid { grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 18px; }
+            .info-card { padding: 12px 14px; font-size: 0.85rem; }
+            .info-card h3 { font-size: 0.5rem; margin-bottom: 6px; }
+
+            .section-header { margin: 24px 0 12px; }
+            .section-title { font-size: 0.85rem; letter-spacing: 2px; }
+
+            .scoreboard { margin-bottom: 20px; }
+            .score-header { padding: 16px 18px; }
+            .score-runs { font-size: 2.4rem; letter-spacing: -1px; }
+            .score-team-name { font-size: 1rem; }
+
+            .player-grid { grid-template-columns: 1fr; gap: 0.5px; }
+            .player-cell { padding: 14px 16px; }
+            .player-role { font-size: 0.55rem; }
+            .player-name-val { font-size: 1rem; margin-bottom: 6px; }
+            .player-big-num { font-size: 1.8rem; margin-bottom: 8px; }
+            .stat-chips { gap: 4px; }
+            .chip { font-size: 0.65rem; padding: 2px 6px; }
+
+            .stats-grid { grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 24px; }
+            .stat-card { padding: 12px 10px; }
+            .stat-card h3 { font-size: 0.5rem; margin-bottom: 8px; }
+            .stat-card p { font-size: 1.2rem; }
+
+            .poll-section { padding: 16px; margin-bottom: 24px; }
+            .poll-title { font-size: 1rem; margin-bottom: 16px; }
+            .poll-meta { font-size: 0.85rem; }
+            .poll-team-name { font-size: 0.85rem; }
+            .poll-row { margin-bottom: 14px; }
+            .poll-bar { height: 8px; }
+            .poll-buttons { flex-direction: column; gap: 8px; }
+            .poll-btn { width: 100%; padding: 9px 16px; font-size: 0.85rem; letter-spacing: 2px; }
+
+            .summary-grid { grid-template-columns: 1fr; gap: 6px; margin-bottom: 24px; }
+            .summary-card { padding: 14px 16px; }
+            .summary-card h3 { font-size: 0.5rem; }
+            .summary-card p { font-size: 0.85rem; line-height: 1.4; }
+
+            table { font-size: 0.8rem; }
+            th { padding: 7px 8px; font-size: 0.5rem; letter-spacing: 1px; }
+            td { padding: 7px 8px; font-size: 0.75rem; }
+
+            .table-wrap { margin-bottom: 20px; }
+
+            .live-badge { margin-left: 0; }
+            .innings-pill { margin-top: 12px; padding: 6px 18px; font-size: 0.85rem; }
+        }
+
+        @media (max-width: 480px) {
+            .container { width: 100%; padding: 0 8px; }
+            
+            h1 { font-size: 1.5rem; }
+            .header-eyebrow { font-size: 0.5rem; }
+            .match-subtitle { font-size: 0.85rem; }
+
+            .hero-band { grid-template-columns: 1fr 1fr; gap: 0.5px; margin: 12px 0; }
+            .hero-tile-value { font-size: 1rem; }
+
+            .stats-grid { grid-template-columns: 1fr 1fr; gap: 5px; }
+            .stat-card { padding: 10px 8px; }
+            .stat-card p { font-size: 1rem; }
+
+            .score-runs { font-size: 2.1rem; }
+            .player-big-num { font-size: 1.6rem; }
+
+            .poll-btn { padding: 8px 14px; font-size: 0.75rem; }
+            .poll-title { font-size: 0.95rem; }
+
+            td { font-size: 0.7rem; }
+            th { font-size: 0.48rem; }
+        }
+        .footer {
+            margin-top: 40px;
+            padding: 20px 24px;
+            background: rgba(12,26,51,0.92);
+            border-top: 1px solid rgba(111,13,29,0.25);
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            box-shadow: inset 0 6px 14px rgba(0, 0, 0, 0.2);
+            border-radius: 0 0 10px 10px;
+        }
+        .footer a {
+            color: var(--gold);
+            text-decoration: none;
+            font-weight: 700;
+        }
+        .footer a:hover { color: var(--cream); }
+
+        .footer .footer-meta {
+            margin-top: 8px;
+            color: rgba(237,230,210,0.7);
+            font-size: 0.82rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAV -->
+    <nav class="page-nav">
+        <div class="nav-logo"><span>BIG</span>MATCH · ODI</div>
+        <div class="nav-menu">
+            <a href="#scorecard" class="nav-link">Score</a>
+            <a href="#stats" class="nav-link">Stats</a>
+            <a href="#poll" class="nav-link">Poll</a>
+            <a href="#scoresheet" class="nav-link">Scoresheet</a>
+        </div>
+    </nav>
+
+    <!-- HEADER -->
+    <header>
+        <div class="header-eyebrow">66th</div>
+        <h1>Battle of the Babes</h1>
+        <div class="match-subtitle">
+            St. Sylvester's College <span class="vs-tag">VS</span> Vidyartha College
+        </div>
+        <div>
+            <span class="live-badge"><span class="live-dot"></span>🔴 LIVE</span>
+        </div>
+        <div id="inningsStatus" class="innings-pill"></div>
+    </header>
+
+    <div class="container">
+
+        <!-- BATTING SCORECARD -->
+        <div id="scorecard">
+            <div class="section-header"><span class="section-title">Live Scorecard</span></div>
+            <div class="scoreboard">
+                <div class="score-header">
+                    <div class="score-team-info">
+                        <div class="score-team-name" id="teamName">—</div>
+                        <div class="score-overs" id="team1Overs">—</div>
+                    </div>
+                    <div class="score-runs" id="team1Runs">0/0</div>
+                </div>
+
+                <div class="player-grid">
+                    <!-- Batter 1 -->
+                    <div class="player-cell batter-cell">
+                        <div class="player-role">Batter · Striker</div>
+                        <div class="player-name-val" id="batter1Name">—</div>
+                        <div class="player-big-num" id="batter1Runs">0</div>
+                        <div class="stat-chips">
+                            <div class="chip" id="batter1Balls">0 balls</div>
+                            <div class="chip" id="batter1four">0 Four</div>
+                            <div class="chip" id="batter1six">0 Six</div>
+                        </div>
+                    </div>
+
+                    <!-- Batter 2 -->
+                    <div class="player-cell batter-cell">
+                        <div class="player-role">Batter · Non-Striker</div>
+                        <div class="player-name-val" id="batter2Name">—</div>
+                        <div class="player-big-num" id="batter2Runs">0</div>
+                        <div class="stat-chips">
+                            <div class="chip" id="batter2Balls">0 balls</div>
+                            <div class="chip" id="batter2four">0 Four</div>
+                            <div class="chip" id="batter2six">0 Six</div>
+                        </div>
+                    </div>
+
+                    <!-- Bowler -->
+                    <div class="player-cell bowler-cell">
+                        <div class="player-role">Current Bowler</div>
+                        <div class="player-name-val" id="bowlerName">—</div>
+                        <div class="stat-chips" style="margin-top:4px; gap:8px;">
+                            <div class="chip"><strong id="bowlerOvers">0.0</strong> ov</div>
+                            <div class="chip"><strong id="bowlerMaidens">0</strong> md</div>
+                            <div class="chip"><strong id="bowlerRuns">0</strong> runs</div>
+                            <div class="chip"><strong id="bowlerWickets">0</strong> wkts</div>
+                            <div class="chip"><strong id="bowlerEconomy">0.00</strong> eco</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- HERO BAND -->
+        <div class="hero-band">
+            <div class="hero-tile">
+                <div class="hero-tile-label">Batting Team</div>
+                <div class="hero-tile-value" id="heroTeam1">—</div>
+            </div>
+            <div class="hero-tile">
+                <div class="hero-tile-label">Opposition</div>
+                <div class="hero-tile-value" id="heroTeam2">—</div>
+            </div>
+            <div class="hero-tile">
+                <div class="hero-tile-label">Run Rate</div>
+                <div class="hero-tile-value" id="heroRunRate">—</div>
+            </div>
+            <div class="hero-tile">
+                <div class="hero-tile-label">Req. Rate</div>
+                <div class="hero-tile-value" id="heroRequiredRate">—</div>
+            </div>
+        </div>
+
+        <!-- MATCH INFO -->
+        <div class="section-header"><span class="section-title">Match Info</span></div>
+        <div class="info-grid">
+            <div class="info-card"><h3>Toss</h3><p id="tossText">—</p></div>
+            <div class="info-card"><h3>Venue</h3><p id="GroundName">—</p></div>
+            <div class="info-card"><h3>Date</h3><p id="matchDate">—</p></div>
+            <div class="info-card"><h3>Umpires</h3><p id="umpireName">—</p></div>
+        </div>
+
+        <!-- MATCH STATS -->
+        <div id="stats">
+            <div class="section-header"><span class="section-title">Match Statistics</span></div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Partnership</h3>
+                    <p id="partnership">—</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Last 5 Overs</h3>
+                    <p id="last5">—</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Extras</h3>
+                    <p id="extras">—</p>
+                </div>
+                <div class="stat-card highlight">
+                    <h3>Run Rate</h3>
+                    <p id="runRate">—</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Projected</h3>
+                    <p id="projectedScore">—</p>
+                </div>
+                <div class="stat-card highlight">
+                    <h3>Req. Rate</h3>
+                    <p id="requiredRate">—</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- LIVE POLL -->
+        <div class="poll-section" id="poll">
+            <div class="poll-title">Who Will <span>Win?</span></div>
+            <div class="poll-buttons">
+                <button class="poll-btn poll-btn-ssc" onclick="voteTeam('SSC')">▶ Vote SSCK</button>
+                <button class="poll-btn poll-btn-vc" onclick="voteTeam('VC')">▶ Vote VCK</button>
+            </div>
+            <div class="poll-bars">
+                <div class="poll-row">
+                    <div class="poll-meta">
+                        <span class="poll-team-name">St. Sylvester's College</span>
+                        <span class="poll-count-val"><span id="votesSSC">0</span> votes</span>
+                    </div>
+                    <div class="poll-bar"><div class="poll-fill" id="percentSSC" style="width:0%"></div></div>
+                </div>
+                <div class="poll-row">
+                    <div class="poll-meta">
+                        <span class="poll-team-name">Vidyartha College</span>
+                        <span class="poll-count-val"><span id="votesVC">0</span> votes</span>
+                    </div>
+                    <div class="poll-bar"><div class="poll-fill poll-fill-vc" id="percentVC" style="width:0%"></div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DISMISSED BATTERS -->
+        <div id="scoresheet">
+            <div class="section-header"><span class="section-title">Dismissed Batters</span></div>
+            <div class="table-wrap">
+                <table id="dismissedBattersTable">
+                    <thead>
+                        <tr>
+                            <th>Batter</th><th>Runs</th><th>Balls</th>
+                            <th>4s</th><th>6s</th><th>SR</th><th>Dismissal</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <!-- BOWLING CARD -->
+            <div class="section-header"><span class="section-title">Bowling Card</span></div>
+            <div class="table-wrap">
+                <table id="bowlersTable">
+                    <thead>
+                        <tr>
+                            <th>Bowler</th><th>Overs</th><th>Maidens</th>
+                            <th>Runs</th><th>Wickets</th><th>Economy</th>
+                            <th>0s</th><th>4s</th><th>6s</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- MATCH SUMMARY -->
+        <div class="section-header"><span class="section-title">Match Summary</span></div>
+        <div class="summary-grid">
+            <div class="summary-card"><h3>Match Situation</h3><p id="matchSituation">—</p></div>
+            <div class="summary-card"><h3>Key Moment</h3><p id="keyMoment">—</p></div>
+            <div class="summary-card"><h3>Best Batsman</h3><p id="bestBatsman">—</p></div>
+            <div class="summary-card"><h3>Best Bowler</h3><p id="bestBowler">—</p></div>
+        </div>
+
+    </div><!-- /container -->
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyAQq2_fHmCU50BFR4QUA-104xsd52G2rKA",
+            authDomain: "bigmatch-score-update.firebaseapp.com",
+            projectId: "bigmatch-score-update",
+            storageBucket: "bigmatch-score-update.firebasestorage.app",
+            messagingSenderId: "752542009673",
+            appId: "1:752542009673:web:b981ff781b23af00a83298",
+            measurementId: "G-QBGP0VM2X6"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        function voteTeam(team) {
+            const teamRef = db.ref('pollVotes/' + team);
+            teamRef.transaction((currentVotes) => (currentVotes || 0) + 1);
+        }
+
+        const pollRef = db.ref('pollVotes');
+        pollRef.on('value', (snapshot) => {
+            const data = snapshot.val() || { SSC: 0, VC: 0 };
+            document.getElementById('votesSSC').textContent = data.SSC;
+            document.getElementById('votesVC').textContent = data.VC;
+            const total = data.SSC + data.VC;
+            const percentSSC = total ? ((data.SSC / total) * 100).toFixed(1) : 0;
+            const percentVC  = total ? ((data.VC  / total) * 100).toFixed(1) : 0;
+            const elSSC = document.getElementById('percentSSC');
+            const elVC  = document.getElementById('percentVC');
+            elSSC.style.width = percentSSC + '%';
+            elSSC.title = percentSSC + '%';
+            elVC.style.width  = percentVC  + '%';
+            elVC.title  = percentVC  + '%';
+        });
+
+        db.ref("match").on("value", (snapshot) => {
+            const data = snapshot.val();
+            if (!data) return;
+
+            const set = (id, val, fallback='—') => {
+                const el = document.getElementById(id);
+                if (el) el.textContent = val || fallback;
+            };
+
+            set("inningsStatus",   data.inningsStatus);
+            set("tossText",        data.toss);
+            set("GroundName",      data.GroundName);
+            set("teamName",        data.team1Name || "St. Sylvester's");
+            set("team1Runs",       data.team1Runs,  '0/0');
+            set("team1Overs",      data.team1Overs ? `(${data.team1Overs} overs)` : '');
+            set("umpireName",      data.umpireName);
+            set("matchDate",       data.matchDate);
+
+            set("batter1Name",   data.batter1Name);
+            set("batter1Runs",   data.batter1Runs,  '0');
+            set("batter1Balls",  data.batter1Balls ? `${data.batter1Balls} balls` : '0 balls');
+            set("batter1four",   data.batter1four  ? `${data.batter1four} Four`   : '0 Four');
+            set("batter1six",    data.batter1six   ? `${data.batter1six} Six`     : '0 Six');
+
+            set("batter2Name",   data.batter2Name);
+            set("batter2Runs",   data.batter2Runs,  '0');
+            set("batter2Balls",  data.batter2Balls ? `${data.batter2Balls} balls` : '0 balls');
+            set("batter2four",   data.batter2four  ? `${data.batter2four} Four`   : '0 Four');
+            set("batter2six",    data.batter2six   ? `${data.batter2six} Six`     : '0 Six');
+
+            set("bowlerName",    data.bowlerName);
+            set("bowlerOvers",   data.bowlerOvers,   '0.0');
+            set("bowlerMaidens", data.bowlerMaidens, '0');
+            set("bowlerRuns",    data.bowlerRuns,    '0');
+            set("bowlerWickets", data.bowlerWickets, '0');
+            set("bowlerEconomy", data.bowlerEconomy, '0.00');
+
+            set("partnership",     data.partnership,    '0');
+            set("last5",           data.last5,          '0');
+            set("extras",          data.extras,         '0');
+            set("runRate",         data.runRate,        '0.00');
+            set("requiredRate",    data.requiredRate,   '0.00');
+            set("projectedScore",  data.projectedScore, '—');
+
+            set("heroTeam1",        data.team1Name || 'SSC');
+            set("heroTeam2",        data.team2Name || 'VC');
+            set("heroRunRate",      data.runRate ? Number(data.runRate).toFixed(2) : '0.00');
+            set("heroRequiredRate", data.requiredRate ? Number(data.requiredRate).toFixed(2) : '0.00');
+
+            set("matchSituation", data.matchSituation);
+            set("keyMoment",      data.keyMoment);
+            set("bestBatsman",    data.bestBatsman);
+            set("bestBowler",     data.bestBowler);
+
+            // Dismissed batters
+            const dismissedTbody = document.querySelector("#dismissedBattersTable tbody");
+            dismissedTbody.innerHTML = "";
+            (data.dismissedBatters || []).forEach(b => {
+                dismissedTbody.innerHTML += `<tr>
+                    <td>${b.name||''}</td><td>${b.runs||'0'}</td><td>${b.balls||'0'}</td>
+                    <td>${b.fours||'0'}</td><td>${b.sixes||'0'}</td><td>${b.sr||'0'}</td>
+                    <td>${b.dismissal||''}</td>
+                </tr>`;
+            });
+
+            // Bowlers
+            const bowlersTbody = document.querySelector("#bowlersTable tbody");
+            bowlersTbody.innerHTML = "";
+            (data.bowlers || []).forEach(b => {
+                bowlersTbody.innerHTML += `<tr>
+                    <td>${b.name||''}</td><td>${b.overs||'0.0'}</td><td>${b.maidens||'0'}</td>
+                    <td>${b.runs||'0'}</td><td>${b.wickets||'0'}</td><td>${b.economy||'0.00'}</td>
+                    <td>${b.dotBalls||'0'}</td><td>${b.foursConceded||'0'}</td><td>${b.sixesConceded||'0'}</td>
+                </tr>`;
+            });
+        });
+
+        // Theme toggle
+    </script>
+
+    <footer class="footer">
+        <div><strong>© 2026 Battle of the Babes</strong> • Live score aggregator by BigMatch Dashboard</div>
+        <div class="footer-meta">Data updates every 2 seconds • St. Sylvester's College vs Vidyartha College</div>
+        <div class="footer-meta"><a href="#" target="_blank" rel="noopener">Privacy Policy</a> • <a href="#" target="_blank" rel="noopener">Terms of Use</a></div>
+    </footer>
+</body>
+</html>
